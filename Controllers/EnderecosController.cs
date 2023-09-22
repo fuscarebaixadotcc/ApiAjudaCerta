@@ -4,11 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiAjudaCerta.Data;
 using ApiAjudaCerta.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiAjudaCerta.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[Controller]")]
     public class EnderecosController : ControllerBase

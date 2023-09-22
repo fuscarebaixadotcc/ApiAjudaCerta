@@ -19,6 +19,8 @@ namespace ApiAjudaCerta.Models
         public Boolean? bloqueado { get; set; }
         [NotMapped]
         public string Senha { get; set; }
+        [NotMapped]
+        public string Token { get; set; }
         public List<Pessoa> Pessoas { get; set; }
 
     }
