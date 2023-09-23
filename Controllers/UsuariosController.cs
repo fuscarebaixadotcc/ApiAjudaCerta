@@ -123,6 +123,7 @@ namespace ApiAjudaCerta.Controllers
                 novoUsuario.Senha_Salt = salt;
                 await _context.Usuario.AddAsync(novoUsuario);
                 await _context.SaveChangesAsync();
+                novoUsuario.Token = CriarToken(novoUsuario);
 
                 return Ok(novoUsuario.Id);
             }

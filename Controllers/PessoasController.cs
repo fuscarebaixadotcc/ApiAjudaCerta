@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using ApiAjudaCerta.Data;
 using ApiAjudaCerta.Models;
+using ApiAjudaCerta.Models.Enuns;
 using ApiAjudaCerta.Utils;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,23 @@ namespace ApiAjudaCerta.Controllers
             return int.Parse(_httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
         }
 
+        private string FormatarCpf(string cpf)
+        {
+            string Cpf = cpf.Replace("-","");
+            Cpf = Cpf.Replace(".","");
+
+            return(Cpf);
+        }
+        private string FormatarCnpj(string cnpj)
+        {
+            string Cnpj = cnpj.Replace("-","");
+            Cnpj = Cnpj.Replace(".","");
+            Cnpj = Cnpj.Replace("/","");
+
+            return(Cnpj);
+        }
+
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetSingle(int id)
         {
@@ -50,16 +68,39 @@ namespace ApiAjudaCerta.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPost("RegistrarPF")]
+        [HttpPost("Registrar")]
         public async Task<IActionResult> Add(Pessoa novaPessoa)
         {
             try
             {
-                if(!Validacao.ValidaCPF(novaPessoa.Documento))
-                    throw new Exception("CPF inválido.");
-                else if(!Validacao.VerificaMaioridade(novaPessoa.DataNasc))
-                    throw new Exception("O usuário precisa ser maior de idade.");
+                if(novaPessoa.fisicaJuridica == FisicaJuridicaEnum.PESSOA_FISICA)
+                {
+                    if(!Validacao.ValidaCPF(novaPessoa.Documento))
+                        throw new Exception("CPF inválido.");
+                    else if(!Validacao.VerificaMaioridade(novaPessoa.DataNasc))
+                        throw new Exception("O usuário precisa ser maior de idade.");
+                    else
+                    {
+                        novaPessoa.Documento = FormatarCpf(novaPessoa.Documento);
+                        Pessoa p = await _context.Pessoa.FirstOrDefaultAsync(pBusca => pBusca.Documento == novaPessoa.Documento);
 
+                        if(p != null)
+                            throw new Exception("Este CPF já está cadastrado, tente recuperar sua conta.");
+                    }
+                }
+                else if(novaPessoa.fisicaJuridica == FisicaJuridicaEnum.PESSOA_JURIDICA)
+                {
+                    if(!Validacao.ValidaCNPJ(novaPessoa.Documento))
+                        throw new Exception("CNPJ inválido.");
+                    else
+                    {
+                        novaPessoa.Documento = FormatarCnpj(novaPessoa.Documento);
+                        Pessoa p = await _context.Pessoa.FirstOrDefaultAsync(pBusca => pBusca.Documento == novaPessoa.Documento);
+
+                        if(p != null)
+                            throw new Exception("Este CNPJ já está cadastrado, tente recuperar sua conta.");
+                    }
+                }
 
                 novaPessoa.Usuario = _context.Usuario.FirstOrDefault(uBusca => uBusca.Id == ObterUsuarioId());
 
