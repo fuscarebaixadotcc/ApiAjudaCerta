@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiAjudaCerta.Models;
+using ApiAjudaCerta.Utils;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiAjudaCerta.Data
@@ -31,6 +32,18 @@ namespace ApiAjudaCerta.Data
         {
             modelBuilder.Entity<ItemDoacaoDoado>()
                 .HasKey(idd => new {idd.DoacaoId, idd.ItemDoacaoId});
+
+            Usuario user = new Usuario();
+            user.Email = "fuscatcc@gmail.com";
+            Criptografia.CriarPasswordHash("12345678", out byte[] hash, out byte[] salt);
+
+            user.Id = 1;
+            user.Senha_Hash = hash;
+            user.Senha_Salt = salt;
+            user.Senha = string.Empty;
+
+            modelBuilder.Entity<Usuario>().HasData(user);
+
         }
     }
 }
