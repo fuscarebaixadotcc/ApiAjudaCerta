@@ -125,7 +125,7 @@ namespace ApiAjudaCerta.Controllers
                 await _context.SaveChangesAsync();
                 novoUsuario.Token = CriarToken(novoUsuario);
 
-                return Ok(novoUsuario);
+                return Ok(novoUsuario.Id);
             }
             catch (Exception ex)
             {

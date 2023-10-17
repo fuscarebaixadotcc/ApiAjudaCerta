@@ -107,7 +107,7 @@ namespace ApiAjudaCerta.Controllers
                 await _context.Pessoa.AddAsync(novaPessoa);
                 await _context.SaveChangesAsync();
 
-                return Ok(novaPessoa);
+                return Ok(novaPessoa.Id);
             }
             catch (Exception ex)
             {
