@@ -75,3 +75,8 @@ C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\obj\Debug\net7.0\ApiAjudaCerta.pdb
 C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\obj\Debug\net7.0\ApiAjudaCerta.genruntimeconfig.cache
 C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\obj\Debug\net7.0\ref\ApiAjudaCerta.dll
 C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\publish\web.config
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\publish\ApiAjudaCerta.deps.json
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\publish\ApiAjudaCerta.runtimeconfig.json
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\publish\appsettings.Development.json
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\bin\Debug\net7.0\publish\appsettings.json
