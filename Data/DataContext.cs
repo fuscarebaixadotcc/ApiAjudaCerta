@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Threading.Tasks;
 using ApiAjudaCerta.Models;
 using ApiAjudaCerta.Utils;
@@ -44,6 +45,28 @@ namespace ApiAjudaCerta.Data
 
             modelBuilder.Entity<Usuario>().HasData(user);
 
+            Endereco end = new Endereco();
+            end.Id = 1;
+            end.Rua = "Avenida Josino Vieira de Goes";
+            end.Numero = "1091";
+            end.Bairro = "Jardim Tremembé";
+            end.Cep = "02319000";
+            end.Cidade = "São Paulo";
+            end.Estado = "São Paulo";
+
+            modelBuilder.Entity<Endereco>().HasData(end);
+
+            Pessoa p = new Pessoa();
+            p.Id = 1;
+            p.Nome = "ONG Estrela Dalva";
+            p.Documento = null;
+            p.fisicaJuridica = Models.Enuns.FisicaJuridicaEnum.PESSOA_JURIDICA;
+            p.Telefone = null;
+            p.Genero = null;
+            p.DataNasc = DateTime.MinValue;
+            p.Tipo = Models.Enuns.TipoPessoaEnum.ONG;
+            
+            modelBuilder.Entity<Pessoa>().HasData(p);
         }
     }
 }
