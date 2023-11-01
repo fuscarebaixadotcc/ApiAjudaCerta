@@ -7,6 +7,19 @@ namespace ApiAjudaCerta.Utils
 {
     public class Validacao
     {
+        public static bool VerificaEmail(string strEmail)
+        {
+            string strModelo = "^([0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$";
+            if (System.Text.RegularExpressions.Regex.IsMatch(strEmail, strModelo))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         public static bool VerificaMaioridade(DateTime datanasc)
         {
             int idade = (DateTime.Now.Year - datanasc.Year);
