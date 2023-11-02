@@ -1,12 +1,23 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace ApiAjudaCerta.Utils
 {
     public class Validacao
     {
+        public static bool ValidaCEP(string cep)
+        {
+            Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
+
+            if (!Rgx.IsMatch(cep))
+                return false;
+            else
+                return true;
+        }
+
         public static bool VerificaEmail(string strEmail)
         {
             string strModelo = "^([0-9a-zA-Z]([-.\\w]*[0-9a-zA-Z])*@([0-9a-zA-Z][-\\w]*[0-9a-zA-Z]\\.)+[a-zA-Z]{2,9})$";

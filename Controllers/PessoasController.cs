@@ -106,7 +106,7 @@ namespace ApiAjudaCerta.Controllers
         {
             try
             {
-                if (Validacao.VerificaEmail(novaPessoa.Usuario.Email))
+                if (!Validacao.VerificaEmail(novaPessoa.Usuario.Email))
                 {
                     throw new Exception("Endereço de e-mail inválido.");
                 }
@@ -148,6 +148,9 @@ namespace ApiAjudaCerta.Controllers
                             throw new Exception("Este CNPJ já está cadastrado, tente recuperar sua conta.");
                     }
                 }
+
+                if(!Validacao.ValidaCEP(novaPessoa.Endereco.Cep))
+                    throw new Exception("Digite um CEP válido.");
 
                 //novaPessoa.Usuario = _context.Usuario.FirstOrDefault(uBusca => uBusca.Id == ObterUsuarioId());
                 Criptografia.CriarPasswordHash(novaPessoa.Usuario.Senha, out byte[] hash, out byte[] salt);
