@@ -100,6 +100,23 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
+        [HttpGet("GetByNomeAproximado/{nomePessoa}")]
+        public async Task<IActionResult> GetByNomeAproximado(string nomePessoa)
+        {
+            try
+            {
+                List<Pessoa> lista = await _context.Pessoa
+                    	.Where(p => p.Nome.ToLower().Contains(nomePessoa.ToLower()))
+                        .ToListAsync();
+
+                return Ok(lista); 
+            }
+            catch (Exception ex)
+            {                
+                return BadRequest(ex.Message);
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost("Registrar")]
         public async Task<IActionResult> Add(Pessoa novaPessoa)

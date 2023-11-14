@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiAjudaCerta.Models.Enuns;
 
 namespace ApiAjudaCerta.Models
 {
@@ -10,6 +11,7 @@ namespace ApiAjudaCerta.Models
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Descricao { get; set; }
+        public TipoItemEnum TipoItem { get; set; }
         public List<Eletrodomestico> Eletrodomesticos { get; set; }
         public List<Mobilia> Mobilias { get; set; }
         public List<Produto> Produtos { get; set; }

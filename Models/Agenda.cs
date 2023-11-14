@@ -14,7 +14,6 @@ namespace ApiAjudaCerta.Models
         public StatusDoacaoEnum Status { get; set; }
         public Pessoa Pessoa { get; set; }
         public Endereco Endereco { get; set; }
-        [JsonIgnore]
         public Doacao Doacao { get; set; }
     }
 }

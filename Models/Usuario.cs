@@ -21,6 +21,7 @@ namespace ApiAjudaCerta.Models
         public string Senha { get; set; }
         [NotMapped]
         public string Token { get; set; }
+        public byte[]? Foto { get; set; }
         public List<Pessoa> Pessoas { get; set; }
 
     }

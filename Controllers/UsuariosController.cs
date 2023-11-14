@@ -169,15 +169,38 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
-
-        [HttpPut("Atualizar")]
-        public async Task<IActionResult> Atualizar(Usuario atualizarUsuario)
+        [HttpPut("AtualizarEmail")]
+        public async Task<IActionResult> AtualizarEmail(Usuario u)
         {
             try
             {
-                _context.Usuario.Update(atualizarUsuario);
-                int linhasAfetadas = await _context.SaveChangesAsync();
+                Usuario usuario = await _context.Usuario //Busca o usuário no banco através do Id
+                .FirstOrDefaultAsync(x => x.Id == u.Id);
+                usuario.Email = u.Email;
+                var attach = _context.Attach(usuario);
+                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.Email).IsModified = true;
+                int linhasAfetadas = await _context.SaveChangesAsync(); //Confirma a alteração no banco
+                return Ok(linhasAfetadas); //Retorna as linhas afetadas (Geralmente sempre 1 linha msm)
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
+        [HttpPut("AtualizarFoto")]
+        public async Task<IActionResult> AtualizarFoto(Usuario u)
+        {
+            try
+            {
+                Usuario usuario = await _context.Usuario
+                .FirstOrDefaultAsync(x => x.Id == u.Id);
+                usuario.Foto = u.Foto;
+                var attach = _context.Attach(usuario);  
+                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.Foto).IsModified = true;
+                int linhasAfetadas = await _context.SaveChangesAsync();
                 return Ok(linhasAfetadas);
             }
             catch (Exception ex)

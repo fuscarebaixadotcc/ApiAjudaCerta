@@ -34,6 +34,10 @@ namespace ApiAjudaCerta.Data
             modelBuilder.Entity<ItemDoacaoDoado>()
                 .HasKey(idd => new {idd.DoacaoId, idd.ItemDoacaoId});
 
+            // modelBuilder.Entity<Dinheiro>()
+            //     .Property(d => d.Id)
+            //     .ValueGeneratedNever();
+
             Usuario user = new Usuario();
             user.Email = "fuscatcc@gmail.com";
             Criptografia.CriarPasswordHash("12345678", out byte[] hash, out byte[] salt);
