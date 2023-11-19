@@ -162,3 +162,4 @@ D:\3AI\ApiAjudaCerta\obj\Debug\net7.0\refint\ApiAjudaCerta.dll
 D:\3AI\ApiAjudaCerta\obj\Debug\net7.0\ApiAjudaCerta.pdb
 D:\3AI\ApiAjudaCerta\obj\Debug\net7.0\ApiAjudaCerta.genruntimeconfig.cache
 D:\3AI\ApiAjudaCerta\obj\Debug\net7.0\ref\ApiAjudaCerta.dll
+C:\Projetos\AjudaCertaTCC\ApiAjudaCerta\obj\Debug\net7.0\ApiAjudaCerta.sourcelink.json

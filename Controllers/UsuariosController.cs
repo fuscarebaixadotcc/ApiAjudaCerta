@@ -209,6 +209,31 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
+        [HttpPut("AtualizarSenha")]
+        public async Task<IActionResult> AtualizarSenha(Usuario u)
+        {
+            try
+            {
+                Usuario usuario = await _context.Usuario
+                .FirstOrDefaultAsync(x => x.Id == u.Id);
+                Criptografia.CriarPasswordHash(u.Senha, out byte[] hash, out byte[] salt);
+                usuario.Senha = string.Empty;
+                usuario.Senha_Hash = hash;
+                usuario.Senha_Salt = salt;
+
+                var attach = _context.Attach(usuario);  
+                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.Senha_Hash).IsModified = true;
+                attach.Property(x => x.Senha_Salt).IsModified = true;
+                int linhasAfetadas = await _context.SaveChangesAsync();
+                return Ok(linhasAfetadas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpDelete(("{id}"))]
         public async Task<IActionResult> Delete(int id)
         {

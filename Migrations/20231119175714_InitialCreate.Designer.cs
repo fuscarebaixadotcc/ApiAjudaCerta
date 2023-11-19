@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ApiAjudaCerta.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230920013206_MigracaoDoacao")]
-    partial class MigracaoDoacao
+    [Migration("20231119175714_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,22 +54,6 @@ namespace ApiAjudaCerta.Migrations
                     b.ToTable("Agenda");
                 });
 
-            modelBuilder.Entity("ApiAjudaCerta.Models.Dinheiro", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Valor")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Dinheiro");
-                });
-
             modelBuilder.Entity("ApiAjudaCerta.Models.Doacao", b =>
                 {
                     b.Property<int>("Id")
@@ -84,8 +68,8 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("DinheiroId")
-                        .HasColumnType("int");
+                    b.Property<double>("Dinheiro")
+                        .HasColumnType("float");
 
                     b.Property<int>("IdDoacaoOrigem")
                         .HasColumnType("int");
@@ -104,8 +88,6 @@ namespace ApiAjudaCerta.Migrations
                     b.HasIndex("AgendaId")
                         .IsUnique();
 
-                    b.HasIndex("DinheiroId");
-
                     b.HasIndex("PessoaId");
 
                     b.ToTable("Doacao");
@@ -122,10 +104,18 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Condicao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ItemDoacaoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Medida")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("StatusItem")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemDoacaoId");
 
                     b.ToTable("Eletrodomestico");
                 });
@@ -165,6 +155,18 @@ namespace ApiAjudaCerta.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Endereco");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Bairro = "Jardim Tremembé",
+                            Cep = "02319000",
+                            Cidade = "São Paulo",
+                            Estado = "São Paulo",
+                            Numero = "1091",
+                            Rua = "Avenida Josino Vieira de Goes"
+                        });
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.ItemDoacao", b =>
@@ -178,12 +180,62 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Descricao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TipoItem")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("ItemDoacao");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.ItemDoacaoDoado", b =>
+                {
+                    b.Property<int>("DoacaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemDoacaoId")
+                        .HasColumnType("int");
+
+                    b.HasKey("DoacaoId", "ItemDoacaoId");
+
+                    b.HasIndex("ItemDoacaoId");
+
+                    b.ToTable("ItemDoacaoDoado");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Mensagem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Conteudo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DestinatarioId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("RemetenteId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinatarioId");
+
+                    b.HasIndex("RemetenteId");
+
+                    b.ToTable("Mensagem");
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Mobilia", b =>
@@ -197,13 +249,21 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Condicao")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("ItemDoacaoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Medida")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("StatusItem")
+                        .HasColumnType("int");
 
                     b.Property<string>("Tipo")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemDoacaoId");
 
                     b.ToTable("Mobilia");
                 });
@@ -240,6 +300,9 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
 
+                    b.Property<int>("fisicaJuridica")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("EnderecoId");
@@ -247,6 +310,41 @@ namespace ApiAjudaCerta.Migrations
                     b.HasIndex("UsuarioId");
 
                     b.ToTable("Pessoa");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DataNasc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nome = "ONG Estrela Dalva",
+                            Tipo = 2,
+                            fisicaJuridica = 2
+                        });
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Conteudo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("DataPostagem")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("varbinary(max)");
+
+                    b.Property<int>("Likes")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Post");
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Produto", b =>
@@ -257,6 +355,12 @@ namespace ApiAjudaCerta.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("ItemDoacaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusItem")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoProduto")
                         .HasColumnType("int");
 
@@ -264,6 +368,8 @@ namespace ApiAjudaCerta.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemDoacaoId");
 
                     b.ToTable("Produto");
                 });
@@ -285,10 +391,18 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<int>("Genero")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ItemDoacaoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("StatusItem")
+                        .HasColumnType("int");
+
                     b.Property<string>("Tamanho")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ItemDoacaoId");
 
                     b.ToTable("Roupa");
                 });
@@ -304,6 +418,9 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<byte[]>("Foto")
+                        .HasColumnType("varbinary(max)");
+
                     b.Property<byte[]>("Senha_Hash")
                         .HasColumnType("varbinary(max)");
 
@@ -316,6 +433,16 @@ namespace ApiAjudaCerta.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuario");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Email = "ongestreladalva@gmail.com",
+                            Senha_Hash = new byte[] { 20, 171, 17, 144, 85, 164, 242, 170, 69, 59, 222, 253, 247, 242, 107, 242, 200, 44, 80, 178, 149, 30, 101, 55, 67, 194, 179, 19, 244, 87, 8, 46, 162, 47, 75, 68, 28, 242, 41, 251, 176, 87, 72, 229, 201, 32, 123, 137, 133, 172, 201, 246, 238, 41, 11, 57, 250, 62, 102, 203, 215, 190, 101, 128 },
+                            Senha_Salt = new byte[] { 158, 100, 96, 82, 122, 37, 76, 201, 32, 105, 37, 219, 51, 243, 228, 83, 8, 98, 34, 94, 160, 134, 36, 113, 175, 58, 21, 46, 151, 177, 227, 171, 132, 37, 132, 187, 171, 200, 67, 28, 201, 52, 115, 146, 156, 20, 29, 127, 152, 156, 241, 220, 201, 100, 113, 47, 247, 178, 186, 174, 145, 57, 192, 86, 26, 142, 109, 226, 42, 188, 165, 18, 175, 1, 174, 118, 144, 214, 42, 2, 103, 55, 158, 146, 112, 98, 83, 118, 216, 238, 157, 23, 119, 127, 131, 126, 245, 146, 139, 68, 191, 202, 38, 231, 78, 78, 181, 216, 238, 179, 105, 63, 149, 169, 82, 227, 127, 199, 107, 187, 66, 168, 77, 109, 123, 217, 16, 40 },
+                            UltimoAcesso = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Agenda", b =>
@@ -341,19 +468,69 @@ namespace ApiAjudaCerta.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ApiAjudaCerta.Models.Dinheiro", "Dinheiro")
-                        .WithMany("Doacoes")
-                        .HasForeignKey("DinheiroId");
-
                     b.HasOne("ApiAjudaCerta.Models.Pessoa", "Pessoa")
                         .WithMany("Doacoes")
                         .HasForeignKey("PessoaId");
 
                     b.Navigation("Agenda");
 
-                    b.Navigation("Dinheiro");
-
                     b.Navigation("Pessoa");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Eletrodomestico", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.ItemDoacao", "ItemDoacao")
+                        .WithMany("Eletrodomesticos")
+                        .HasForeignKey("ItemDoacaoId");
+
+                    b.Navigation("ItemDoacao");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.ItemDoacaoDoado", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.Doacao", "Doacao")
+                        .WithMany("ItemDoacaoDoados")
+                        .HasForeignKey("DoacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiAjudaCerta.Models.ItemDoacao", "ItemDoacao")
+                        .WithMany("ItemDoacaoDoados")
+                        .HasForeignKey("ItemDoacaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Doacao");
+
+                    b.Navigation("ItemDoacao");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Mensagem", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.Pessoa", "Destinatario")
+                        .WithMany("MensagensEnviadas")
+                        .HasForeignKey("DestinatarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ApiAjudaCerta.Models.Pessoa", "Remetente")
+                        .WithMany("MensagensRecebidas")
+                        .HasForeignKey("RemetenteId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Destinatario");
+
+                    b.Navigation("Remetente");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Mobilia", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.ItemDoacao", "ItemDoacao")
+                        .WithMany("Mobilias")
+                        .HasForeignKey("ItemDoacaoId");
+
+                    b.Navigation("ItemDoacao");
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Pessoa", b =>
@@ -371,14 +548,32 @@ namespace ApiAjudaCerta.Migrations
                     b.Navigation("Usuario");
                 });
 
+            modelBuilder.Entity("ApiAjudaCerta.Models.Produto", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.ItemDoacao", "ItemDoacao")
+                        .WithMany("Produtos")
+                        .HasForeignKey("ItemDoacaoId");
+
+                    b.Navigation("ItemDoacao");
+                });
+
+            modelBuilder.Entity("ApiAjudaCerta.Models.Roupa", b =>
+                {
+                    b.HasOne("ApiAjudaCerta.Models.ItemDoacao", "ItemDoacao")
+                        .WithMany("Roupas")
+                        .HasForeignKey("ItemDoacaoId");
+
+                    b.Navigation("ItemDoacao");
+                });
+
             modelBuilder.Entity("ApiAjudaCerta.Models.Agenda", b =>
                 {
                     b.Navigation("Doacao");
                 });
 
-            modelBuilder.Entity("ApiAjudaCerta.Models.Dinheiro", b =>
+            modelBuilder.Entity("ApiAjudaCerta.Models.Doacao", b =>
                 {
-                    b.Navigation("Doacoes");
+                    b.Navigation("ItemDoacaoDoados");
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Endereco", b =>
@@ -388,11 +583,28 @@ namespace ApiAjudaCerta.Migrations
                     b.Navigation("Pessoa");
                 });
 
+            modelBuilder.Entity("ApiAjudaCerta.Models.ItemDoacao", b =>
+                {
+                    b.Navigation("Eletrodomesticos");
+
+                    b.Navigation("ItemDoacaoDoados");
+
+                    b.Navigation("Mobilias");
+
+                    b.Navigation("Produtos");
+
+                    b.Navigation("Roupas");
+                });
+
             modelBuilder.Entity("ApiAjudaCerta.Models.Pessoa", b =>
                 {
                     b.Navigation("Agendas");
 
                     b.Navigation("Doacoes");
+
+                    b.Navigation("MensagensEnviadas");
+
+                    b.Navigation("MensagensRecebidas");
                 });
 
             modelBuilder.Entity("ApiAjudaCerta.Models.Usuario", b =>

@@ -18,11 +18,11 @@ namespace ApiAjudaCerta.Models
         public string? Genero { get; set;}
         public DateTime DataNasc { get; set; }
         public TipoPessoaEnum Tipo { get; set; }
-       // [JsonIgnore]
         public Usuario Usuario { get; set; }
-        //[JsonIgnore]
         public Endereco Endereco { get; set; }
         public List<Agenda> Agendas { get; set; }
         public List<Doacao> Doacoes { get; set; }
+        public List<Mensagem> MensagensRecebidas { get; set; }
+        public List<Mensagem> MensagensEnviadas { get; set; }
     }
 }

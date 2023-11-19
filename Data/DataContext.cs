@@ -21,25 +21,37 @@ namespace ApiAjudaCerta.Data
         public DbSet<Pessoa> Pessoa { get; set; }
         public DbSet<Agenda> Agenda { get; set; }
         public DbSet<Doacao> Doacao { get; set; }
-        public DbSet<Dinheiro> Dinheiro { get; set; }
         public DbSet<ItemDoacao> ItemDoacao { get; set;}
         public DbSet<Roupa> Roupa { get; set; }
         public DbSet<Produto> Produto { get; set; }
         public DbSet<Mobilia> Mobilia { get; set; }
         public DbSet<Eletrodomestico> Eletrodomestico { get; set; }
         public DbSet<ItemDoacaoDoado> ItemDoacaoDoado { get; set; }
+        public DbSet<Mensagem> Mensagem { get; set; }
+        public DbSet<Post> Post { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ItemDoacaoDoado>()
                 .HasKey(idd => new {idd.DoacaoId, idd.ItemDoacaoId});
 
+            modelBuilder.Entity<Mensagem>()
+                .HasOne(x => x.Remetente)
+                .WithMany(x => x.MensagensRecebidas)
+                .HasForeignKey(x => x.RemetenteId);
+
+            modelBuilder.Entity<Mensagem>()
+                .HasOne(x => x.Destinatario)
+                .WithMany(x => x.MensagensEnviadas)
+                .HasForeignKey(x => x.DestinatarioId);
+
+            
             // modelBuilder.Entity<Dinheiro>()
             //     .Property(d => d.Id)
             //     .ValueGeneratedNever();
 
             Usuario user = new Usuario();
-            user.Email = "fuscatcc@gmail.com";
+            user.Email = "ongestreladalva@gmail.com";
             Criptografia.CriarPasswordHash("12345678", out byte[] hash, out byte[] salt);
 
             user.Id = 1;
@@ -69,8 +81,10 @@ namespace ApiAjudaCerta.Data
             p.Genero = null;
             p.DataNasc = DateTime.MinValue;
             p.Tipo = Models.Enuns.TipoPessoaEnum.ONG;
+            //p.Endereco = end;
             
             modelBuilder.Entity<Pessoa>().HasData(p);
+
         }
     }
 }

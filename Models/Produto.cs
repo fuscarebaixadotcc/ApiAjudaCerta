@@ -11,6 +11,7 @@ namespace ApiAjudaCerta.Models
         public int Id { get; set; }
         public DateTime Validade { get; set; }
         public TipoProdutoEnum TipoProduto { get; set; }
+        public StatusItemEnum StatusItem { get; set; }
         public ItemDoacao ItemDoacao { get; set; }
     }
 }

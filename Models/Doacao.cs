@@ -16,7 +16,7 @@ namespace ApiAjudaCerta.Models
         public Pessoa Pessoa { get; set; }
         public Agenda Agenda { get; set; }
         public int AgendaId { get; set; }
-        public Dinheiro? Dinheiro { get; set; }
+        public double Dinheiro { get; set; }
         public List<ItemDoacaoDoado> ItemDoacaoDoados { get; set; }
     }
 }
