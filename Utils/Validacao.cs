@@ -8,15 +8,15 @@ namespace ApiAjudaCerta.Utils
 {
     public class Validacao
     {
-        public static bool ValidaCEP(string cep)
-        {
-            Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
+        // public static bool ValidaCEP(string cep)
+        // {
+        //     Regex Rgx = new Regex(@"^\d{5}-\d{3}$");
 
-            if (!Rgx.IsMatch(cep))
-                return false;
-            else
-                return true;
-        }
+        //     if (!Rgx.IsMatch(cep))
+        //         return false;
+        //     else
+        //         return true;
+        // }
 
         public static bool VerificaEmail(string strEmail)
         {

@@ -166,8 +166,8 @@ namespace ApiAjudaCerta.Controllers
                     }
                 }
 
-                if(!Validacao.ValidaCEP(novaPessoa.Endereco.Cep))
-                    throw new Exception("Digite um CEP válido.");
+                // if(!Validacao.ValidaCEP(novaPessoa.Endereco.Cep))
+                //     throw new Exception("Digite um CEP válido.");
 
                 //novaPessoa.Usuario = _context.Usuario.FirstOrDefault(uBusca => uBusca.Id == ObterUsuarioId());
                 Criptografia.CriarPasswordHash(novaPessoa.Usuario.Senha, out byte[] hash, out byte[] salt);
