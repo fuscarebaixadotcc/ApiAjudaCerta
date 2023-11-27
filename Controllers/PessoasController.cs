@@ -100,6 +100,21 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
+        [HttpGet("GetByUsuarioId")]
+        public async Task<IActionResult> GetByUsuarioId()
+        {
+            try
+            {
+                Pessoa p = await _context.Pessoa
+                            .FirstOrDefaultAsync(pBusca => pBusca.Usuario.Id == ObterUsuarioId());
+                return Ok(p);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetByNomeAproximado/{nomePessoa}")]
         public async Task<IActionResult> GetByNomeAproximado(string nomePessoa)
         {

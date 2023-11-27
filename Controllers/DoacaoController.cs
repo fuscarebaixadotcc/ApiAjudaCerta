@@ -161,6 +161,86 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
+        [HttpPost("AgendarRetirada")]
+        public async Task<IActionResult> AgendarRetirada(ItemDoacaoDoado novoItemDoacaoDoado)
+        {
+            try
+            {
+                if (novoItemDoacaoDoado.Doacao.Agenda.Data < DateTime.Now)
+                    throw new Exception("Não é possível agendar doações em datas inválidas.");
+
+                Usuario uDoador = _context.Usuario.FirstOrDefault(uBusca => uBusca.Id == ObterUsuarioId());
+                novoItemDoacaoDoado.Doacao.Pessoa = _context.Pessoa.FirstOrDefault(pBusca => pBusca.Usuario.Id == uDoador.Id);
+                
+                if (novoItemDoacaoDoado.ItemDoacao != null)
+                {
+                    if (novoItemDoacaoDoado.ItemDoacao.TipoItem == TipoItemEnum.PRODUTO)
+                    {
+                        // Produto produto = novoItemDoacaoDoado.ItemDoacao.Produtos.FirstOrDefault();
+                        List<Produto> lista = novoItemDoacaoDoado.ItemDoacao.Produtos;
+                        foreach (Produto produto in lista)
+                        {
+                            if (produto.Validade <= DateTime.Now)
+                                throw new Exception("O produto deve ter uma data de validade superior ao dia de hoje."); // ou exception
+                            
+                            Produto p = await _context.Produto.FirstOrDefaultAsync(x => x.Id == produto.Id);
+                            p.StatusItem = StatusItemEnum.INDISPONIVEL;
+                            var attach = _context.Attach(p);
+                            attach.Property(x => x.Id).IsModified = false;
+                            attach.Property(x => x.StatusItem).IsModified = true;
+                        }
+                    }
+                    else if(novoItemDoacaoDoado.ItemDoacao.TipoItem == TipoItemEnum.MOBILIA)
+                    {
+                        List<Mobilia> lista = novoItemDoacaoDoado.ItemDoacao.Mobilias;
+                        foreach (Mobilia m in lista)
+                        {
+                            Mobilia mobilia = await _context.Mobilia.FirstOrDefaultAsync(x => x.Id == m.Id);
+                            mobilia.StatusItem = StatusItemEnum.INDISPONIVEL;
+                            var attach = _context.Attach(mobilia);
+                            attach.Property(x => x.Id).IsModified = false;
+                            attach.Property(x => x.StatusItem).IsModified = true;
+                        }
+                    }
+                    else if(novoItemDoacaoDoado.ItemDoacao.TipoItem == TipoItemEnum.ROUPA)
+                    {
+                        List<Roupa> lista = novoItemDoacaoDoado.ItemDoacao.Roupas;
+                        foreach (Roupa r in lista)
+                        {
+                            Roupa roupa = await _context.Roupa.FirstOrDefaultAsync(x => x.Id == r.Id);
+                            roupa.StatusItem = StatusItemEnum.INDISPONIVEL;
+                            var attach = _context.Attach(roupa);
+                            attach.Property(x => x.Id).IsModified = false;
+                            attach.Property(x => x.StatusItem).IsModified = true;
+                        }
+                    }
+                    else if(novoItemDoacaoDoado.ItemDoacao.TipoItem == TipoItemEnum.ELETRODOMESTICO)
+                    {
+                        List<Eletrodomestico> lista = novoItemDoacaoDoado.ItemDoacao.Eletrodomesticos;
+                        foreach (Eletrodomestico e in lista)
+                        {
+                            Eletrodomestico eletro = await _context.Eletrodomestico.FirstOrDefaultAsync(x => x.Id == e.Id);
+                            eletro.StatusItem = StatusItemEnum.INDISPONIVEL;
+                            var attach = _context.Attach(eletro);
+                            attach.Property(x => x.Id).IsModified = false;
+                            attach.Property(x => x.StatusItem).IsModified = true;
+                        }
+                    }
+
+                    await _context.ItemDoacaoDoado.AddAsync(novoItemDoacaoDoado);
+                    await _context.SaveChangesAsync();
+
+                    return Ok(novoItemDoacaoDoado.Doacao.Id);
+                }
+                else
+                    throw new Exception("Deve selecionar algum item para retirar.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            } 
+        }
+
         [HttpPost("DoacaoItens")]
         public async Task<IActionResult> DoarItens(ItemDoacaoDoado novoItemDoacaoDoado)
         {
