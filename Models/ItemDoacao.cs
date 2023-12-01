@@ -12,6 +12,7 @@ namespace ApiAjudaCerta.Models
         public string Nome { get; set; }
         public string Descricao { get; set; }
         public TipoItemEnum TipoItem { get; set; }
+        public int Quantidade { get; set; }
         public byte[]? Foto { get; set; }
         public List<Eletrodomestico> Eletrodomesticos { get; set; }
         public List<Mobilia> Mobilias { get; set; }

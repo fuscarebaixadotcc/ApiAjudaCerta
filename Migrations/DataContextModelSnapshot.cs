@@ -183,6 +183,9 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Nome")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Quantidade")
+                        .HasColumnType("int");
+
                     b.Property<int>("TipoItem")
                         .HasColumnType("int");
 
@@ -279,7 +282,7 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Documento")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("EnderecoId")
+                    b.Property<int>("EnderecoId")
                         .HasColumnType("int");
 
                     b.Property<string>("Genero")
@@ -297,7 +300,7 @@ namespace ApiAjudaCerta.Migrations
                     b.Property<string>("Username")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("UsuarioId")
+                    b.Property<int>("UsuarioId")
                         .HasColumnType("int");
 
                     b.Property<int>("fisicaJuridica")
@@ -316,8 +319,11 @@ namespace ApiAjudaCerta.Migrations
                         {
                             Id = 1,
                             DataNasc = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            EnderecoId = 1,
                             Nome = "ONG Estrela Dalva",
                             Tipo = 2,
+                            Username = "@ong_estreladalva",
+                            UsuarioId = 1,
                             fisicaJuridica = 2
                         });
                 });
@@ -439,8 +445,8 @@ namespace ApiAjudaCerta.Migrations
                         {
                             Id = 1,
                             Email = "ongestreladalva@gmail.com",
-                            Senha_Hash = new byte[] { 145, 136, 31, 169, 236, 212, 67, 207, 52, 100, 155, 165, 176, 145, 240, 209, 199, 30, 200, 204, 24, 141, 111, 125, 48, 194, 162, 3, 242, 226, 160, 237, 248, 216, 47, 235, 155, 190, 165, 173, 233, 222, 37, 234, 65, 233, 35, 36, 238, 191, 102, 47, 221, 65, 196, 32, 82, 212, 14, 20, 232, 100, 252, 181 },
-                            Senha_Salt = new byte[] { 172, 175, 85, 9, 172, 65, 113, 106, 129, 192, 247, 143, 200, 8, 113, 23, 83, 223, 154, 220, 204, 128, 163, 4, 175, 224, 207, 229, 255, 99, 205, 123, 76, 112, 173, 206, 176, 198, 155, 114, 160, 22, 227, 42, 224, 255, 155, 111, 55, 208, 52, 84, 22, 27, 61, 98, 95, 226, 111, 111, 53, 166, 141, 254, 95, 162, 25, 121, 213, 75, 155, 114, 35, 117, 45, 9, 215, 205, 150, 198, 200, 246, 7, 255, 115, 156, 215, 112, 168, 7, 79, 21, 25, 246, 142, 70, 37, 123, 188, 221, 203, 18, 137, 79, 132, 182, 46, 26, 196, 31, 33, 162, 25, 168, 119, 181, 241, 131, 163, 73, 73, 149, 25, 191, 238, 61, 27, 141 },
+                            Senha_Hash = new byte[] { 251, 117, 16, 172, 16, 147, 173, 93, 176, 28, 57, 213, 228, 186, 99, 150, 56, 171, 153, 185, 15, 199, 236, 2, 146, 151, 251, 142, 185, 45, 17, 23, 254, 214, 7, 195, 26, 48, 204, 151, 34, 26, 56, 80, 234, 165, 180, 38, 209, 242, 22, 250, 116, 126, 181, 24, 113, 200, 114, 150, 251, 156, 52, 123 },
+                            Senha_Salt = new byte[] { 223, 145, 196, 244, 159, 170, 187, 196, 166, 221, 171, 197, 137, 65, 207, 107, 40, 247, 44, 11, 210, 196, 147, 253, 172, 121, 13, 3, 174, 74, 125, 171, 226, 95, 75, 113, 8, 12, 11, 60, 169, 255, 126, 19, 94, 96, 34, 33, 161, 209, 131, 205, 21, 17, 105, 139, 176, 137, 216, 180, 146, 157, 19, 129, 134, 9, 128, 112, 243, 74, 235, 48, 63, 100, 69, 137, 241, 80, 217, 147, 133, 181, 47, 84, 142, 175, 103, 215, 4, 220, 180, 247, 154, 120, 74, 50, 122, 236, 82, 44, 20, 27, 12, 38, 230, 90, 220, 17, 78, 43, 3, 2, 221, 143, 3, 13, 109, 71, 251, 196, 218, 179, 141, 219, 46, 230, 20, 250 },
                             UltimoAcesso = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
@@ -537,11 +543,15 @@ namespace ApiAjudaCerta.Migrations
                 {
                     b.HasOne("ApiAjudaCerta.Models.Endereco", "Endereco")
                         .WithMany("Pessoa")
-                        .HasForeignKey("EnderecoId");
+                        .HasForeignKey("EnderecoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("ApiAjudaCerta.Models.Usuario", "Usuario")
                         .WithMany("Pessoas")
-                        .HasForeignKey("UsuarioId");
+                        .HasForeignKey("UsuarioId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Endereco");
 

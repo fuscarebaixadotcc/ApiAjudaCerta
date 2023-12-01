@@ -45,6 +45,7 @@ namespace ApiAjudaCerta.Data
                 .WithMany(x => x.MensagensEnviadas)
                 .HasForeignKey(x => x.DestinatarioId);
 
+
             
             // modelBuilder.Entity<Dinheiro>()
             //     .Property(d => d.Id)
@@ -75,14 +76,15 @@ namespace ApiAjudaCerta.Data
             Pessoa p = new Pessoa();
             p.Id = 1;
             p.Nome = "ONG Estrela Dalva";
+            p.Username = "@ong_estreladalva";
             p.Documento = null;
             p.fisicaJuridica = Models.Enuns.FisicaJuridicaEnum.PESSOA_JURIDICA;
             p.Telefone = null;
             p.Genero = null;
             p.DataNasc = DateTime.MinValue;
             p.Tipo = Models.Enuns.TipoPessoaEnum.ONG;
-            //p.Endereco = end;
-            
+            p.EnderecoId = 1;
+            p.UsuarioId = 1;
             modelBuilder.Entity<Pessoa>().HasData(p);
 
         }

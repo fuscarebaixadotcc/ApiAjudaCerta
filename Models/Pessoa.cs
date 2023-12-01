@@ -20,7 +20,9 @@ namespace ApiAjudaCerta.Models
         public DateTime DataNasc { get; set; }
         public TipoPessoaEnum Tipo { get; set; }
         public Usuario Usuario { get; set; }
+        public int UsuarioId { get; set;} 
         public Endereco Endereco { get; set; }
+        public int EnderecoId { get; set; }
         public List<Agenda> Agendas { get; set; }
         public List<Doacao> Doacoes { get; set; }
         public List<Mensagem> MensagensRecebidas { get; set; }

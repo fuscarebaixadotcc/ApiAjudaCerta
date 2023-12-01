@@ -4,6 +4,7 @@ namespace ApiAjudaCerta.Models.Enuns
     {
         ALIMENTO = 1,
         LIMPEZA = 2,
-        HIGIENE = 3
+        HIGIENE = 3,
+        CESTA_BASICA = 4
     }
 }

@@ -67,5 +67,25 @@ namespace ApiAjudaCerta.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpDelete("DeletarPost")]
+        public async Task<IActionResult> Remove(Post post)
+        {
+            try
+            {
+                if(post != null)
+                {
+                    _context.Post.Remove(post);
+                    int linhasAfetadas = await _context.SaveChangesAsync();
+                    return Ok(linhasAfetadas);
+                }
+                else
+                    throw new Exception("Deve selecionar um post para excluir");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }
