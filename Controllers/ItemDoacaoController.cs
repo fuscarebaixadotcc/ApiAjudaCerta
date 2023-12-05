@@ -42,16 +42,76 @@ namespace ApiAjudaCerta.Controllers
                 ItemDoacao itemD = await _context.ItemDoacao
                     .FirstOrDefaultAsync(idBusca => idBusca.Id == id);
 
-                if(itemD.TipoItem == TipoItemEnum.PRODUTO)
-                    itemD.Produtos.Add( await _context.Produto.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
-                else if(itemD.TipoItem == TipoItemEnum.ROUPA)
-                    itemD.Roupas.Add( await _context.Roupa.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
-                else if(itemD.TipoItem == TipoItemEnum.MOBILIA)
-                    itemD.Mobilias.Add( await _context.Mobilia.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
-                else if(itemD.TipoItem == TipoItemEnum.ELETRODOMESTICO)
-                    itemD.Eletrodomesticos.Add( await _context.Eletrodomestico.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
 
                 return Ok(itemD);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetProduto/{id}")]
+        public async Task<IActionResult> GetProduto(int id)
+        {
+            try
+            {
+                Produto p = await _context.Produto
+                    .FirstOrDefaultAsync(idBusca => idBusca.ItemDoacaoId == id);
+
+
+                return Ok(p);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetRoupa/{id}")]
+        public async Task<IActionResult> GetRoupa(int id)
+        {
+            try
+            {
+                Roupa r = await _context.Roupa
+                    .FirstOrDefaultAsync(idBusca => idBusca.ItemDoacaoId == id);
+
+
+                return Ok(r);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetEletrodomestico/{id}")]
+        public async Task<IActionResult> GetEletrodomestico(int id)
+        {
+            try
+            {
+                Eletrodomestico e = await _context.Eletrodomestico
+                    .FirstOrDefaultAsync(idBusca => idBusca.ItemDoacaoId == id);
+
+
+                return Ok(e);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("GetMobilia/{id}")]
+        public async Task<IActionResult> GetMobilia(int id)
+        {
+            try
+            {
+                Mobilia m = await _context.Mobilia
+                    .FirstOrDefaultAsync(idBusca => idBusca.ItemDoacaoId == id);
+
+
+                return Ok(m);
             }
             catch (Exception ex)
             {

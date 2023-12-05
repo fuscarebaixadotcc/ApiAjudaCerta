@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiAjudaCerta")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Release")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+37c1db3ec47cacfe9565dad15bcecc40facbf402")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6604616bb7bc89a3fafd0e425249bae0d28b127b")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiAjudaCerta")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiAjudaCerta")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

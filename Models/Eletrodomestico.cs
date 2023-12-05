@@ -13,5 +13,6 @@ namespace ApiAjudaCerta.Models
         public string Condicao { get; set; }
         public StatusItemEnum StatusItem { get; set; }
         public ItemDoacao ItemDoacao { get; set; }
+        public int ItemDoacaoId { get; set; }
     }
 }
