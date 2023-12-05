@@ -33,6 +33,24 @@ namespace ApiAjudaCerta.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSingle(int id)
+        {
+            try
+            {
+                Doacao d = await _context.Doacao
+                    .FirstOrDefaultAsync(dBusca => dBusca.Id == id);
+                    
+                return Ok(d);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
+
         [HttpGet("GetAll")]
         public async Task<IActionResult> GetAll()
         {

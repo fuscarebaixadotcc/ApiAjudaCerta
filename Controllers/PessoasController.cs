@@ -115,6 +115,21 @@ namespace ApiAjudaCerta.Controllers
             }
         }
 
+        [HttpGet("GetByUsername")]
+        public async Task<IActionResult> GetByUsername(Pessoa pessoa)
+        {
+            try
+            {
+                Pessoa p = await _context.Pessoa
+                            .FirstOrDefaultAsync(pBusca => pBusca.Username == pessoa.Username);
+                return Ok(p);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("GetByNomeAproximado/{nomePessoa}")]
         public async Task<IActionResult> GetByNomeAproximado(string nomePessoa)
         {
@@ -201,5 +216,29 @@ namespace ApiAjudaCerta.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("AtualizarDados")]
+        public async Task<IActionResult> AtualizarFoto(Pessoa p)
+        {
+            try
+            {
+                Pessoa pessoa = await _context.Pessoa
+                .FirstOrDefaultAsync(x => x.Id == p.Id);
+                
+                var attach = _context.Attach(pessoa);
+
+                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.Username).IsModified = true;
+                attach.Property(x => x.Telefone).IsModified = true;
+                int linhasAfetadas = await _context.SaveChangesAsync();
+                return Ok(linhasAfetadas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        
     }
 }

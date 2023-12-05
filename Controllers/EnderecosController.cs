@@ -53,5 +53,43 @@ namespace ApiAjudaCerta.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpPut("AtualizarDados")]
+        public async Task<IActionResult> AtualizarFoto(Endereco e)
+        {
+            try
+            {
+                Endereco endereco = await _context.Endereco
+                .FirstOrDefaultAsync(x => x.Id == e.Id);
+                endereco.Cep = e.Cep;
+                endereco.Rua = e.Rua;
+                endereco.Numero = e.Numero;
+                endereco.Bloco = e.Bloco;
+                endereco.Bairro = e.Bairro;
+                endereco.Cidade = e.Cidade;
+                endereco.Complemento = e.Complemento;
+                endereco.Estado = e.Estado;
+                
+
+                var attach = _context.Attach(endereco);
+
+                attach.Property(x => x.Id).IsModified = false;
+                attach.Property(x => x.Rua).IsModified = true;
+                attach.Property(x => x.Bloco).IsModified = true;
+                attach.Property(x => x.Numero).IsModified = true;
+                attach.Property(x => x.Bairro).IsModified = true;
+                attach.Property(x => x.Bloco).IsModified = true;
+                attach.Property(x => x.Rua).IsModified = true;
+                attach.Property(x => x.Estado).IsModified = true;
+                attach.Property(x => x.Cidade).IsModified = true;
+                
+                int linhasAfetadas = await _context.SaveChangesAsync();
+                return Ok(linhasAfetadas);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

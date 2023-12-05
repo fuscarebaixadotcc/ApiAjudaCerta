@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using System.Drawing;
 using ApiAjudaCerta.Models;
 using ApiAjudaCerta.Utils;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace ApiAjudaCerta.Data
@@ -59,6 +62,8 @@ namespace ApiAjudaCerta.Data
             user.Senha_Hash = hash;
             user.Senha_Salt = salt;
             user.Senha = string.Empty;
+
+            
 
             modelBuilder.Entity<Usuario>().HasData(user);
 

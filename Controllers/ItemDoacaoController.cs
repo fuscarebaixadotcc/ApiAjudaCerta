@@ -34,6 +34,31 @@ namespace ApiAjudaCerta.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            try
+            {
+                ItemDoacao itemD = await _context.ItemDoacao
+                    .FirstOrDefaultAsync(idBusca => idBusca.Id == id);
+
+                if(itemD.TipoItem == TipoItemEnum.PRODUTO)
+                    itemD.Produtos.Add( await _context.Produto.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
+                else if(itemD.TipoItem == TipoItemEnum.ROUPA)
+                    itemD.Roupas.Add( await _context.Roupa.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
+                else if(itemD.TipoItem == TipoItemEnum.MOBILIA)
+                    itemD.Mobilias.Add( await _context.Mobilia.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
+                else if(itemD.TipoItem == TipoItemEnum.ELETRODOMESTICO)
+                    itemD.Eletrodomesticos.Add( await _context.Eletrodomestico.FirstOrDefaultAsync(pBusca => pBusca.ItemDoacao.Id == itemD.Id));
+
+                return Ok(itemD);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
         [HttpGet("ListarTodos")]
         public async Task<IActionResult> GetAll()
         {
